@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babulab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #5fbce5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Logo Babulab */
+        #logo {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        #logo img {
+            width: 300px;
+        }
+
+        /* Container for file upload */
+        #file-upload-container {
+            text-align: center;
+        }
+
+        /* Canvas and Buttons styling */
+        #image-container {
+            margin-top: 20px;
+        }
+
+        #output-canvas {
+            border: 2px solid black; /* Black border */
+            width: 600px;
+            height: 600px;
+        }
+
+        /* Thumbnail for baguette */
+        #thumbnail-container {
+            margin-top: 20px;
+        }
+
+        #thumbnail-container img {
+            cursor: pointer;
+            width: 100px;
+        }
+
+        /* Download button hidden by default */
+        #download-button {
+            display: none;
+        }
+
+        /* Buttons styling */
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #3399cc;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #287a99;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo -->
+    <div id="logo">
+        <img src="babulab-logo.png" alt="Babulab Logo">
+    </div>
+
+    <!-- File Upload -->
+    <h2>Choose a babu</h2>
+    <div id="file-upload-container">
+        <input type="file" id="imageUpload" accept="image/*">
+    </div>
+
+    <!-- Image Canvas -->
+    <div id="image-container">
+        <canvas id="output-canvas" width="600" height="600"></canvas>
+    </div>
+
+    <!-- Thumbnail for Baguette Layer -->
+    <div id="thumbnail-container">
+        <img src="baguette-thumbnail.png" alt="Baguette Thumbnail" onclick="applyLayer('baguette')">
+    </div>
+
+    <!-- Download Button -->
+    <div id="download-button">
+        <button id="download-btn" onclick="downloadImage()">Download Image</button>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const canvas = document.getElementById('output-canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadButton = document.getElementById('download-button');
+        let uploadedImage = null;
+
+        // Function to display the uploaded image
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // Draw image on canvas
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    uploadedImage = img;
+                    
+                    // Show the download button after the image is uploaded
+                    downloadButton.style.display = 'block';
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Function to apply a layer
+        function applyLayer(layer) {
+            if (!uploadedImage) return alert("Please upload an image first.");
+            
+            // Redraw the base image
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+
+            // Apply the selected layer
+            if (layer === 'baguette') {
+                const baguetteLayer = new Image();
+                baguetteLayer.src = 'baguette.png'; // Layer image "baguette"
+                baguetteLayer.onload = function() {
+                    ctx.drawImage(baguetteLayer, 0, 0, canvas.width, canvas.height); // Apply the layer on top of the image
+                };
+            }
+        }
+
+        // Function to download the image (fix potential issues with Brave)
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.setAttribute('href', canvas.toDataURL('image/jpeg'));
+            link.setAttribute('download', 'image-with-layer.jpg');
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
