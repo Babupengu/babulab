@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Layer Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        #image-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        #image-container img {
+            max-width: 100%;
+        }
+        #layer-selection {
+            margin-top: 10px;
+        }
+        #output-canvas {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Upload and Apply Layer</h1>
+
+    <!-- Upload the image -->
+    <input type="file" id="imageUpload" accept="image/*">
+    
+    <!-- Layer selection -->
+    <div id="layer-selection">
+        <button onclick="applyLayer('baguette')">Apply Baguette Layer</button>
+    </div>
+
+    <!-- Container to display the image with the layer -->
+    <div id="image-container">
+        <canvas id="output-canvas"></canvas>
+    </div>
+
+    <!-- Button to download the generated image -->
+    <button onclick="downloadImage()">Download Image</button>
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const canvas = document.getElementById('output-canvas');
+        const ctx = canvas.getContext('2d');
+        let uploadedImage = null;
+        let selectedLayer = null;
+
+        // Function to display the uploaded image
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    uploadedImage = img;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Function to apply a layer
+        function applyLayer(layer) {
+            if (!uploadedImage) return alert("Please upload an image first.");
+            
+            // Redraw the base image
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(uploadedImage, 0, 0);
+
+            // Apply the selected layer
+            if (layer === 'baguette') {
+                const baguetteLayer = new Image();
+                baguetteLayer.src = 'baguette.png'; // Layer image "baguette"
+                baguetteLayer.onload = function() {
+                    ctx.drawImage(baguetteLayer, 0, 0, canvas.width, canvas.height); // Apply the layer on top of the image
+                };
+            }
+        }
+
+        // Function to download the image
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'image-with-layer.jpg';
+            link.href = canvas.toDataURL('image/jpeg');
+            link.click();
+        }
+    </script>
+</body>
+</html>
