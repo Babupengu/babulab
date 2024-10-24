@@ -23,25 +23,38 @@
         }
 
         #logo img {
-            width: 300px; /* Adjust the size of the logo as needed */
+            width: 300px;
+        }
+
+        /* Container for file upload */
+        #file-upload-container {
+            text-align: center;
         }
 
         /* Canvas and Buttons styling */
         #image-container {
-            position: relative;
             margin-top: 20px;
-            width: 400px;
-            height: auto;
         }
 
         #output-canvas {
-            border: 1px solid #ddd;
-            width: 400px;
-            height: auto;
+            border: 2px solid black; /* Black border */
+            width: 600px;
+            height: 600px;
         }
 
-        #layer-selection {
-            margin-top: 10px;
+        /* Thumbnail for baguette */
+        #thumbnail-container {
+            margin-top: 20px;
+        }
+
+        #thumbnail-container img {
+            cursor: pointer;
+            width: 100px;
+        }
+
+        /* Download button hidden by default */
+        #download-button {
+            display: none;
         }
 
         /* Buttons styling */
@@ -70,25 +83,30 @@
 
     <!-- File Upload -->
     <h2>Choose a babu</h2>
-    <input type="file" id="imageUpload" accept="image/*">
-
-    <!-- Layer selection -->
-    <div id="layer-selection">
-        <button onclick="applyLayer('baguette')">Baguette</button>
+    <div id="file-upload-container">
+        <input type="file" id="imageUpload" accept="image/*">
     </div>
 
     <!-- Image Canvas -->
     <div id="image-container">
-        <canvas id="output-canvas"></canvas>
+        <canvas id="output-canvas" width="600" height="600"></canvas>
+    </div>
+
+    <!-- Thumbnail for Baguette Layer -->
+    <div id="thumbnail-container">
+        <img src="baguette-thumbnail.png" alt="Baguette Thumbnail" onclick="applyLayer('baguette')">
     </div>
 
     <!-- Download Button -->
-    <button onclick="downloadImage()">Download Image</button>
+    <div id="download-button">
+        <button id="download-btn" onclick="downloadImage()">Download Image</button>
+    </div>
 
     <script>
         const imageUpload = document.getElementById('imageUpload');
         const canvas = document.getElementById('output-canvas');
         const ctx = canvas.getContext('2d');
+        const downloadButton = document.getElementById('download-button');
         let uploadedImage = null;
 
         // Function to display the uploaded image
@@ -99,16 +117,14 @@
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    // Set the canvas size to the original image size
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // Draw image on canvas
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     uploadedImage = img;
                     
-                    // Resize the canvas display to fit 400px width while keeping the aspect ratio
-                    const aspectRatio = img.height / img.width;
-                    canvas.style.width = '400px';
-                    canvas.style.height = `${400 * aspectRatio}px`;
+                    // Show the download button after the image is uploaded
+                    downloadButton.style.display = 'block';
                 };
                 img.src = event.target.result;
             };
@@ -121,7 +137,7 @@
             
             // Redraw the base image
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(uploadedImage, 0, 0);
+            ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
 
             // Apply the selected layer
             if (layer === 'baguette') {
@@ -133,12 +149,15 @@
             }
         }
 
-        // Function to download the image
+        // Function to download the image (fix potential issues with Brave)
         function downloadImage() {
             const link = document.createElement('a');
-            link.download = 'image-with-layer.jpg';
-            link.href = canvas.toDataURL('image/jpeg');
+            link.setAttribute('href', canvas.toDataURL('image/jpeg'));
+            link.setAttribute('download', 'image-with-layer.jpg');
+            
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
