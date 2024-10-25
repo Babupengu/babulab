@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babulab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #5fbce5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Logo Babulab */
+        #logo {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #logo img {
+            width: 300px;
+        }
+
+        /* Container for file upload */
+        #file-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Custom upload button styling */
+        #upload-btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        #imageUpload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #upload-btn-wrapper img {
+            width: 50%; /* Reduced size by 50% */
+            cursor: pointer;
+        }
+
+        /* Thumbnail for funtraits */
+        #thumbnail-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        #thumbnail-container img {
+            cursor: pointer;
+            width: 80px;
+            height: 80px;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        #thumbnail-container img.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Canvas container */
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 620px;
+            height: auto;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+
+        /* Canvas itself */
+        #output-canvas {
+            width: 100%; 
+            height: auto;
+            z-index: 1;
+        }
+
+        /* Frame overlay */
+        #canvas-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Match the canvas container height */
+            background-image: url('images/canvas-border.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.5; /* Set initial opacity to 50% */
+            transition: opacity 0.3s; /* Smooth transition for opacity */
+        }
+
+        /* Download and Copy buttons */
+        #buttons-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #download-btn-wrapper img,
+        #copy-btn-wrapper img {
+            width: 50%;
+        }
+
+        #buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Buttons styling */
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #3399cc;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #287a99;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo -->
+    <div id="logo">
+        <img src="images/babulab-logo.png" alt="Babulab Logo">
+    </div>
+
+    <!-- File Upload -->
+    <div id="file-upload-container">
+        <div id="upload-btn-wrapper">
+            <img src="images/upload-btn.png" alt="Upload Button">
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+    </div>
+
+    <!-- Thumbnails for Funtraits -->
+    <div id="thumbnail-container">
+        <!-- The thumbnails will be dynamically created via JS to avoid repetition -->
+    </div>
+
+    <!-- Canvas Container with frame -->
+    <div id="canvas-container">
+        <canvas id="output-canvas" width="600" height="600"></canvas>
+        <!-- Frame overlay -->
+        <div id="canvas-frame"></div>
+    </div>
+
+    <!-- Buttons: Download and Copy -->
+    <div id="buttons-container">
+        <div id="download-btn-wrapper">
+            <img id="download-btn" src="images/download-btn.png" alt="Download Button" onclick="downloadImage()">
+        </div>
+        <div id="copy-btn-wrapper">
+            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button">
+        </div>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const canvas = document.getElementById('output-canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadBtnWrapper = document.getElementById('download-btn-wrapper');
+        const copyBtnWrapper = document.getElementById('copy-btn-wrapper');
+        const buttonsContainer = document.getElementById('buttons-container');
+        const thumbnailContainer = document.getElementById('thumbnail-container');
+        const canvasFrame = document.getElementById('canvas-frame');
+        let uploadedImage = null;
+        let activeFuntraits = [];
+
+        // Funtraits data with z-levels and thumbnail information
+        const funtraits = {
+            'baguette': { src: 'funtraits/baguette.png', z: 2, thumb: 'thumbnails/baguette-thumbnail.png' },
+            'brekin-neus': { src: 'funtraits/brekin-neus.png', z: 3, thumb: 'thumbnails/brekin-neus-thumbnail.png' },
+            'planting-hamsters': { src: 'funtraits/planting-hamsters.png', z: 2, thumb: 'thumbnails/shrew-thumbnail.png' }
+        };
+
+        // Dynamically create thumbnails
+        Object.keys(funtraits).forEach(funtrait => {
+            const img = document.createElement('img');
+            img.src = funtraits[funtrait].thumb;
+            img.alt = funtrait + ' Thumbnail';
+            img.onclick = () => toggleFuntrait(funtrait);
+            thumbnailContainer.appendChild(img);
+        });
+
+        // Function to display the uploaded image
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    drawCanvas(); // Redraw canvas when a new image is uploaded
+                    buttonsContainer.style.display = 'flex'; // Show the buttons
+                    canvasFrame.style.opacity = '1'; // Set frame opacity to 100%
+
+                    // Enable thumbnails after image is uploaded
+                    document.querySelectorAll('#thumbnail-container img').forEach(thumb => thumb.classList.add('active'));
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Preload image and then draw when it's loaded
+        function preloadImage(src, callback) {
+            const img = new Image();
+            img.onload = function() {
+                callback(img);
+            };
+            img.src = src;
+        }
+
+        // Function to toggle a funtrait (add/remove)
+        function toggleFuntrait(name) {
+            const index = activeFuntraits.findIndex(f => f.name === name);
+            if (index > -1) {
+                // If the funtrait is already active, remove it
+                activeFuntraits.splice(index, 1);
+            } else {
+                // Add the funtrait
+                activeFuntraits.push({ name: name, ...funtraits[name] });
+            }
+            preloadAllFuntraitsAndDraw();
+        }
+
+        // Preload all funtraits and draw them
+        function preloadAllFuntraitsAndDraw() {
+            const funtraitsToDraw = activeFuntraits.slice().sort((a, b) => a.z - b.z);
+
+            let loadedCount = 0;
+            const imagesToDraw = [];
+
+            funtraitsToDraw.forEach((funtrait, index) => {
+                preloadImage(funtrait.src, function(img) {
+                    imagesToDraw[index] = img;
+                    loadedCount++;
+
+                    // Once all images are preloaded, draw everything in order
+                    if (loadedCount === funtraitsToDraw.length) {
+                        drawCanvas(imagesToDraw);
+                    }
+                });
+            });
+        }
+
+        // Function to draw the canvas
+        function drawCanvas(preloadedImages = []) {
+            if (!uploadedImage) return;
+
+            // Clear canvas and redraw base image
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+
+            // Draw preloaded funtrait images in order
+            preloadedImages.forEach(img => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            });
+        }
+
+        // Function to download the image
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.setAttribute('href', canvas.toDataURL('image/jpeg'));
+            link.setAttribute('download', 'image-with-layer.jpg');
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
