@@ -52,7 +52,7 @@
 
         #upload-btn-wrapper img {
             width: 50%; /* Reduced size by 50% */
-            cursor: pointer;
+            cursor: pointer; /* Hand cursor */
         }
 
         /* Thumbnail for funtraits */
@@ -123,12 +123,13 @@
         #download-btn-wrapper img,
         #copy-btn-wrapper img {
             width: 50%;
+            cursor: pointer; /* Hand cursor for download and copy buttons */
         }
 
         #buttons-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 20px; /* Space between buttons */
         }
 
         /* Buttons styling */
@@ -181,7 +182,7 @@
             <img id="download-btn" src="images/download-btn.png" alt="Download Button" onclick="downloadImage()">
         </div>
         <div id="copy-btn-wrapper">
-            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button">
+            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button" onclick="copyCanvasToClipboard()">
         </div>
     </div>
 
@@ -299,6 +300,18 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // Function to copy canvas content to clipboard
+        function copyCanvasToClipboard() {
+            canvas.toBlob(function(blob) {
+                const item = new ClipboardItem({ "image/png": blob });
+                navigator.clipboard.write([item]).then(() => {
+                    alert('Image copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy image: ', err);
+                });
+            });
         }
     </script>
 </body>
