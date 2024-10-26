@@ -34,7 +34,6 @@
             text-align: center;
         }
 
-        /* Custom upload button styling */
         #upload-btn-wrapper {
             position: relative;
             display: inline-block;
@@ -51,17 +50,18 @@
         }
 
         #upload-btn-wrapper img {
-            width: 50%; /* Reduced size by 50% */
-            cursor: pointer; /* Hand cursor */
+            width: 70%;
+            cursor: pointer;
         }
 
-        /* Thumbnail for funtraits */
+        /* Thumbnail container for funtraits */
         #thumbnail-container {
             margin-top: 20px;
             margin-bottom: 20px;
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         #thumbnail-container img {
@@ -89,31 +89,27 @@
             margin-top: 20px;
         }
 
-        /* Canvas itself */
         #output-canvas {
-            width: 100%; 
+            width: 100%;
             height: auto;
             z-index: 1;
         }
 
-        /* Frame overlay */
         #canvas-frame {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* Match the canvas container height */
+            height: 100%;
             background-image: url('images/canvas-border.png');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             z-index: 2;
             pointer-events: none;
-            opacity: 0.5; /* Set initial opacity to 50% */
-            transition: opacity 0.3s; /* Smooth transition for opacity */
+            opacity: 0.5; /* Initial opacity */
         }
 
-        /* Download and Copy buttons */
         #buttons-container {
             display: none;
             margin-top: 20px;
@@ -123,40 +119,22 @@
         #download-btn-wrapper img,
         #copy-btn-wrapper img {
             width: 50%;
-            cursor: pointer; /* Hand cursor for download and copy buttons */
+            cursor: pointer;
         }
 
         #buttons-container {
             display: flex;
             justify-content: center;
-            gap: 20px; /* Space between buttons */
-        }
-
-        /* Buttons styling */
-        button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            background-color: #3399cc;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #287a99;
+            gap: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Logo -->
     <div id="logo">
         <img src="images/babulab-logo.png" alt="Babulab Logo">
     </div>
 
-    <!-- File Upload -->
     <div id="file-upload-container">
         <div id="upload-btn-wrapper">
             <img src="images/upload-btn.png" alt="Upload Button">
@@ -164,25 +142,21 @@
         </div>
     </div>
 
-    <!-- Thumbnails for Funtraits -->
     <div id="thumbnail-container">
-        <!-- The thumbnails will be dynamically created via JS to avoid repetition -->
+        <!-- The thumbnails will be dynamically created via JS -->
     </div>
 
-    <!-- Canvas Container with frame -->
     <div id="canvas-container">
         <canvas id="output-canvas" width="600" height="600"></canvas>
-        <!-- Frame overlay -->
         <div id="canvas-frame"></div>
     </div>
 
-    <!-- Buttons: Download and Copy -->
     <div id="buttons-container">
         <div id="download-btn-wrapper">
             <img id="download-btn" src="images/download-btn.png" alt="Download Button" onclick="downloadImage()">
         </div>
         <div id="copy-btn-wrapper">
-            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button" onclick="copyCanvasToClipboard()">
+            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button">
         </div>
     </div>
 
@@ -198,36 +172,40 @@
         let uploadedImage = null;
         let activeFuntraits = [];
 
-        // Funtraits data with z-levels and thumbnail information
         const funtraits = {
             'baguette': { src: 'funtraits/baguette.png', z: 2, thumb: 'thumbnails/baguette-thumbnail.png' },
-            'brekin-neus': { src: 'funtraits/brekin-neus.png', z: 3, thumb: 'thumbnails/brekin-neus-thumbnail.png' },
-            'planting-hamsters': { src: 'funtraits/planting-hamsters.png', z: 2, thumb: 'thumbnails/shrew-thumbnail.png' }
+            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 4, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 2, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
+            'babuvil': { src: 'funtraits/babuvil.png', z: 2, thumb: 'thumbnails/babuvil-thumbnail.png' },
+            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' }
         };
 
-        // Dynamically create thumbnails
-        Object.keys(funtraits).forEach(funtrait => {
+        const incompatibilities = {
+            'babuvil': ['plantinghamsters'],
+            'plantinghamsters': ['babuvil'],
+            'baguette': ['babangel'],
+            'babangel': ['baguette']
+        };
+
+        Object.keys(funtraits).forEach(funtrait => { // Order: last added, first shown
             const img = document.createElement('img');
             img.src = funtraits[funtrait].thumb;
             img.alt = funtrait + ' Thumbnail';
             img.onclick = () => toggleFuntrait(funtrait);
-            thumbnailContainer.appendChild(img);
+            thumbnailContainer.insertBefore(img, thumbnailContainer.firstChild); // Insert at the top
         });
 
-        // Function to display the uploaded image
         imageUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
-            
+
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
                     uploadedImage = img;
-                    drawCanvas(); // Redraw canvas when a new image is uploaded
-                    buttonsContainer.style.display = 'flex'; // Show the buttons
-                    canvasFrame.style.opacity = '1'; // Set frame opacity to 100%
-
-                    // Enable thumbnails after image is uploaded
+                    drawCanvas();
+                    buttonsContainer.style.display = 'flex';
+                    canvasFrame.style.opacity = 1;
                     document.querySelectorAll('#thumbnail-container img').forEach(thumb => thumb.classList.add('active'));
                 };
                 img.src = event.target.result;
@@ -235,7 +213,6 @@
             reader.readAsDataURL(file);
         });
 
-        // Preload image and then draw when it's loaded
         function preloadImage(src, callback) {
             const img = new Image();
             img.onload = function() {
@@ -244,74 +221,56 @@
             img.src = src;
         }
 
-        // Function to toggle a funtrait (add/remove)
         function toggleFuntrait(name) {
             const index = activeFuntraits.findIndex(f => f.name === name);
             if (index > -1) {
-                // If the funtrait is already active, remove it
                 activeFuntraits.splice(index, 1);
             } else {
-                // Add the funtrait
+                if (incompatibilities[name]) {
+                    incompatibilities[name].forEach(incompatibleName => {
+                        const incompatibleIndex = activeFuntraits.findIndex(f => f.name === incompatibleName);
+                        if (incompatibleIndex > -1) {
+                            activeFuntraits.splice(incompatibleIndex, 1);
+                        }
+                    });
+                }
                 activeFuntraits.push({ name: name, ...funtraits[name] });
+                activeFuntraits.sort((a, b) => a.z - b.z);  // Ensure correct z-order
             }
             preloadAllFuntraitsAndDraw();
         }
 
-        // Preload all funtraits and draw them
         function preloadAllFuntraitsAndDraw() {
-            const funtraitsToDraw = activeFuntraits.slice().sort((a, b) => a.z - b.z);
-
-            let loadedCount = 0;
             const imagesToDraw = [];
+            let loadedCount = 0;
 
-            funtraitsToDraw.forEach((funtrait, index) => {
+            activeFuntraits.forEach((funtrait, index) => {
                 preloadImage(funtrait.src, function(img) {
                     imagesToDraw[index] = img;
                     loadedCount++;
-
-                    // Once all images are preloaded, draw everything in order
-                    if (loadedCount === funtraitsToDraw.length) {
+                    if (loadedCount === activeFuntraits.length) {
                         drawCanvas(imagesToDraw);
                     }
                 });
             });
         }
 
-        // Function to draw the canvas
         function drawCanvas(preloadedImages = []) {
             if (!uploadedImage) return;
-
-            // Clear canvas and redraw base image
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
-
-            // Draw preloaded funtrait images in order
             preloadedImages.forEach(img => {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             });
         }
 
-        // Function to download the image
         function downloadImage() {
             const link = document.createElement('a');
             link.setAttribute('href', canvas.toDataURL('image/jpeg'));
             link.setAttribute('download', 'image-with-layer.jpg');
-            
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        }
-
-        // Function to copy canvas content to clipboard
-        function copyCanvasToClipboard() {
-            canvas.toBlob(function(blob) {
-                const item = new ClipboardItem({ "image/png": blob });
-                navigator.clipboard.write([item]).then(() => {
-                    alert('Image copied to clipboard!');
-                }).catch(err => {
-                    alert('Failed to copy image: ', err);
-                });
-            });
         }
     </script>
 </body>
