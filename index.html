@@ -173,11 +173,15 @@
         let activeFuntraits = [];
 
         const funtraits = {
-            'baguette': { src: 'funtraits/baguette.png', z: 2, thumb: 'thumbnails/baguette-thumbnail.png' },
-            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 4, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
-            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 2, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
-            'babuvil': { src: 'funtraits/babuvil.png', z: 2, thumb: 'thumbnails/babuvil-thumbnail.png' },
-            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' }
+            'baguette': { src: 'funtraits/baguette.png', z: 4, thumb: 'thumbnails/baguette-thumbnail.png' },
+            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 4, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
+            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 5, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+            'babuvil': { src: 'funtraits/babuvil.png', z: 1, thumb: 'thumbnails/babuvil-thumbnail.png' },
+            'babangel': { src: 'funtraits/babangel.png', z: 1, thumb: 'thumbnails/babangel-thumbnail.png' },
+            '1000x': { src: 'funtraits/1000x.png', z: 2, thumb: 'thumbnails/1000x-thumbnail.png' },
+            'babulieve': { src: 'funtraits/babulieve.png', z: 2, thumb: 'thumbnails/babulieve-thumbnail.png' },
+            'whypamp': { src: 'funtraits/whypamp.png', z: 2, thumb: 'thumbnails/whypamp-thumbnail.png' },
+            'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 6, thumb: 'thumbnails/brekkingneus-thumbnail.png' } // Z-index supérieur pour apparaître en haut
         };
 
         const incompatibilities = {
@@ -187,7 +191,7 @@
             'babangel': ['baguette']
         };
 
-        Object.keys(funtraits).forEach(funtrait => { // Order: last added, first shown
+        Object.keys(funtraits).forEach(funtrait => {
             const img = document.createElement('img');
             img.src = funtraits[funtrait].thumb;
             img.alt = funtrait + ' Thumbnail';
@@ -235,7 +239,7 @@
                     });
                 }
                 activeFuntraits.push({ name: name, ...funtraits[name] });
-                activeFuntraits.sort((a, b) => a.z - b.z);  // Ensure correct z-order
+                activeFuntraits.sort((a, b) => a.z - b.z);
             }
             preloadAllFuntraitsAndDraw();
         }
