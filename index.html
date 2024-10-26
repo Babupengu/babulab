@@ -156,7 +156,7 @@
             <img id="download-btn" src="images/download-btn.png" alt="Download Button" onclick="downloadImage()">
         </div>
         <div id="copy-btn-wrapper">
-            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button">
+            <img id="copy-btn" src="images/copy-btn.png" alt="Copy Button" onclick="copyToClipboard()">
         </div>
     </div>
 
@@ -177,7 +177,8 @@
             'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 4, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
             'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 2, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
             'babuvil': { src: 'funtraits/babuvil.png', z: 2, thumb: 'thumbnails/babuvil-thumbnail.png' },
-            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' }
+            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' },
+            'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 999, thumb: 'thumbnails/brekkingneus-thumbnail.png' }
         };
 
         const incompatibilities = {
@@ -187,12 +188,12 @@
             'babangel': ['baguette']
         };
 
-        Object.keys(funtraits).forEach(funtrait => { // Order: last added, first shown
+        Object.keys(funtraits).forEach(funtrait => {
             const img = document.createElement('img');
             img.src = funtraits[funtrait].thumb;
             img.alt = funtrait + ' Thumbnail';
             img.onclick = () => toggleFuntrait(funtrait);
-            thumbnailContainer.insertBefore(img, thumbnailContainer.firstChild); // Insert at the top
+            thumbnailContainer.insertBefore(img, thumbnailContainer.firstChild);
         });
 
         imageUpload.addEventListener('change', function(e) {
@@ -235,7 +236,7 @@
                     });
                 }
                 activeFuntraits.push({ name: name, ...funtraits[name] });
-                activeFuntraits.sort((a, b) => a.z - b.z);  // Ensure correct z-order
+                activeFuntraits.sort((a, b) => a.name === 'brekkingneus' ? 1 : (a.z - b.z)); // Ensure brekkingneus on top
             }
             preloadAllFuntraitsAndDraw();
         }
@@ -271,6 +272,13 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        function copyToClipboard() {
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ "image/png": blob });
+                navigator.clipboard.write([item]);
+            });
         }
     </script>
 </body>
