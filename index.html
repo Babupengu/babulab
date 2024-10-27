@@ -47,6 +47,7 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
+            z-index: 10;
         }
 
         #upload-btn-wrapper img {
@@ -173,15 +174,16 @@
         let activeFuntraits = [];
 
         const funtraits = {
-            'baguette': { src: 'funtraits/baguette.png', z: 4, thumb: 'thumbnails/baguette-thumbnail.png' },
-            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 4, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
-            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 5, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
-            'babuvil': { src: 'funtraits/babuvil.png', z: 1, thumb: 'thumbnails/babuvil-thumbnail.png' },
-            'babangel': { src: 'funtraits/babangel.png', z: 1, thumb: 'thumbnails/babangel-thumbnail.png' },
-            '1000x': { src: 'funtraits/1000x.png', z: 2, thumb: 'thumbnails/1000x-thumbnail.png' },
-            'babulieve': { src: 'funtraits/babulieve.png', z: 2, thumb: 'thumbnails/babulieve-thumbnail.png' },
-            'whypamp': { src: 'funtraits/whypamp.png', z: 2, thumb: 'thumbnails/whypamp-thumbnail.png' },
-            'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 6, thumb: 'thumbnails/brekkingneus-thumbnail.png' } // Z-index supérieur pour apparaître en haut
+            'miami': { src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
+            'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
+	    'babulieve': { src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
+            'whypamp': { src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
+            '1000x': { src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
+            'babuvil': { src: 'funtraits/babuvil.png', z: 3, thumb: 'thumbnails/babuvil-thumbnail.png' },
+            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' },            
+            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 8, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
+            'baguette': { src: 'funtraits/baguette.png', z: 6, thumb: 'thumbnails/baguette-thumbnail.png' }
         };
 
         const incompatibilities = {
@@ -191,7 +193,7 @@
             'babangel': ['baguette']
         };
 
-        Object.keys(funtraits).forEach(funtrait => {
+        Object.keys(funtraits).reverse().forEach(funtrait => { // Inverse l'ordre d'ajout des thumbnails
             const img = document.createElement('img');
             img.src = funtraits[funtrait].thumb;
             img.alt = funtrait + ' Thumbnail';
@@ -239,7 +241,7 @@
                     });
                 }
                 activeFuntraits.push({ name: name, ...funtraits[name] });
-                activeFuntraits.sort((a, b) => a.z - b.z);
+                activeFuntraits.sort((a, b) => a.z - b.z);  // Ensure correct z-order
             }
             preloadAllFuntraitsAndDraw();
         }
