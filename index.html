@@ -174,9 +174,11 @@
         let activeFuntraits = [];
 
         const funtraits = {
+            '687': { src: 'funtraits/687.png', z: 2, thumb: 'thumbnails/687-thumbnail.png' },
+            'kult': { src: 'funtraits/kult.png', z: 2, thumb: 'thumbnails/kult-thumbnail.png' },
             'miami': { src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
             'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
-	    'babulieve': { src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
+            'babulieve': { src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
             'whypamp': { src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
             '1000x': { src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
             'babuvil': { src: 'funtraits/babuvil.png', z: 3, thumb: 'thumbnails/babuvil-thumbnail.png' },
@@ -190,7 +192,12 @@
             'babuvil': ['plantinghamsters'],
             'plantinghamsters': ['babuvil'],
             'baguette': ['babangel'],
-            'babangel': ['baguette']
+            'babangel': ['baguette'],
+            '687': ['kult', 'babulieve', 'whypamp', '1000x'],
+            'kult': ['687', 'babulieve', 'whypamp', '1000x'],
+            'babulieve': ['687', 'kult', 'whypamp', '1000x'],
+            'whypamp': ['687', 'kult', 'babulieve', '1000x'],
+            '1000x': ['687', 'kult', 'babulieve', 'whypamp']
         };
 
         Object.keys(funtraits).reverse().forEach(funtrait => { // Inverse l'ordre d'ajout des thumbnails
