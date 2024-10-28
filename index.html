@@ -161,144 +161,147 @@
         </div>
     </div>
 
-    <script>
-        const imageUpload = document.getElementById('imageUpload');
-        const canvas = document.getElementById('output-canvas');
-        const ctx = canvas.getContext('2d');
-        const downloadBtnWrapper = document.getElementById('download-btn-wrapper');
-        const copyBtnWrapper = document.getElementById('copy-btn-wrapper');
-        const buttonsContainer = document.getElementById('buttons-container');
-        const thumbnailContainer = document.getElementById('thumbnail-container');
-        const canvasFrame = document.getElementById('canvas-frame');
-        let uploadedImage = null;
-        let activeFuntraits = [];
+<script>
+    const imageUpload = document.getElementById('imageUpload');
+    const canvas = document.getElementById('output-canvas');
+    const ctx = canvas.getContext('2d');
+    const downloadBtnWrapper = document.getElementById('download-btn-wrapper');
+    const copyBtnWrapper = document.getElementById('copy-btn-wrapper');
+    const buttonsContainer = document.getElementById('buttons-container');
+    const thumbnailContainer = document.getElementById('thumbnail-container');
+    const canvasFrame = document.getElementById('canvas-frame');
+    let uploadedImage = null;
+    let activeFuntraits = [];
 
-        const funtraits = {
-	    'clown': { src: 'funtraits/clown.png', z: 3, thumb: 'thumbnails/clown-thumbnail.png' },	
-            '687': { src: 'funtraits/687.png', z: 2, thumb: 'thumbnails/687-thumbnail.png' },
-            'kult': { src: 'funtraits/kult.png', z: 2, thumb: 'thumbnails/kult-thumbnail.png' },
-            'miami': { src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
-            'brekkingneus': { src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
-            'babulieve': { src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
-            'whypamp': { src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
-            '1000x': { src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
-            'babuvil': { src: 'funtraits/babuvil.png', z: 3, thumb: 'thumbnails/babuvil-thumbnail.png' },
-            'babangel': { src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' },            
-            'neuspeppa': { src: 'funtraits/neuspeppa.png', z: 8, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
-            'plantinghamsters': { src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
-            'baguette': { src: 'funtraits/baguette.png', z: 6, thumb: 'thumbnails/baguette-thumbnail.png' }
-        };
+    const funtraits = [
+        { name: 'poopchest', src: 'funtraits/poopchest.png', z: 1, thumb: 'thumbnails/poopchest-thumbnail.png' },
+        { name: 'clown', src: 'funtraits/clown.png', z: 3, thumb: 'thumbnails/clown-thumbnail.png' },
+        { name: '687', src: 'funtraits/687.png', z: 2, thumb: 'thumbnails/687-thumbnail.png' },
+        { name: 'kult', src: 'funtraits/kult.png', z: 2, thumb: 'thumbnails/kult-thumbnail.png' },
+        { name: 'miami', src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
+        { name: 'brekkingneus', src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
+        { name: 'babulieve', src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
+        { name: 'whypamp', src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
+        { name: '1000x', src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
+        { name: 'babuvil', src: 'funtraits/babuvil.png', z: 3, thumb: 'thumbnails/babuvil-thumbnail.png' },
+        { name: 'babangel', src: 'funtraits/babangel.png', z: 3, thumb: 'thumbnails/babangel-thumbnail.png' },
+        { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 8, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+        { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
+        { name: 'baguette', src: 'funtraits/baguette.png', z: 6, thumb: 'thumbnails/baguette-thumbnail.png' }
+    ];
 
-        const incompatibilities = {
-            'babuvil': ['plantinghamsters'],
-            'plantinghamsters': ['babuvil'],
-            'baguette': ['babangel'],
-            'babangel': ['baguette'],
-            '687': ['kult', 'babulieve', 'whypamp', '1000x'],
-            'kult': ['687', 'babulieve', 'whypamp', '1000x'],
-            'babulieve': ['687', 'kult', 'whypamp', '1000x'],
-            'whypamp': ['687', 'kult', 'babulieve', '1000x'],
-            '1000x': ['687', 'kult', 'babulieve', 'whypamp']
-        };
+    const incompatibilities = {
+        'babuvil': ['plantinghamsters'],
+        'plantinghamsters': ['babuvil'],
+        'baguette': ['babangel'],
+        'babangel': ['baguette'],
+        '687': ['kult', 'babulieve', 'whypamp', '1000x'],
+        'kult': ['687', 'babulieve', 'whypamp', '1000x'],
+        'babulieve': ['687', 'kult', 'whypamp', '1000x'],
+        'whypamp': ['687', 'kult', 'babulieve', '1000x'],
+        '1000x': ['687', 'kult', 'babulieve', 'whypamp']
+    };
 
-      Object.keys(funtraits).reverse().forEach(funtrait => {
-    const img = document.createElement('img');
-    img.src = funtraits[funtrait].thumb;
-    img.alt = funtrait + ' Thumbnail';
-    img.onclick = () => toggleFuntrait(funtrait);
-    thumbnailContainer.insertBefore(img, thumbnailContainer.firstChild);
-});
+    // Affichage des thumbnails dans l'ordre du tableau
+    funtraits.forEach(funtrait => {
+        const img = document.createElement('img');
+        img.src = funtrait.thumb;
+        img.alt = funtrait.name + ' Thumbnail';
+        img.onclick = () => toggleFuntrait(funtrait.name);
+        thumbnailContainer.appendChild(img);
+    });
 
+    imageUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
 
-        imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    uploadedImage = img;
-                    drawCanvas();
-                    buttonsContainer.style.display = 'flex';
-                    canvasFrame.style.opacity = 1;
-                    document.querySelectorAll('#thumbnail-container img').forEach(thumb => thumb.classList.add('active'));
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        function preloadImage(src, callback) {
+        reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
-                callback(img);
+                uploadedImage = img;
+                drawCanvas();
+                buttonsContainer.style.display = 'flex';
+                canvasFrame.style.opacity = 1;
+                document.querySelectorAll('#thumbnail-container img').forEach(thumb => thumb.classList.add('active'));
             };
-            img.src = src;
-        }
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
 
-        function toggleFuntrait(name) {
-            const index = activeFuntraits.findIndex(f => f.name === name);
-            if (index > -1) {
-                activeFuntraits.splice(index, 1);
-            } else {
-                if (incompatibilities[name]) {
-                    incompatibilities[name].forEach(incompatibleName => {
-                        const incompatibleIndex = activeFuntraits.findIndex(f => f.name === incompatibleName);
-                        if (incompatibleIndex > -1) {
-                            activeFuntraits.splice(incompatibleIndex, 1);
-                        }
-                    });
-                }
-                activeFuntraits.push({ name: name, ...funtraits[name] });
-                activeFuntraits.sort((a, b) => a.z - b.z);  // Ensure correct z-order
-            }
-            preloadAllFuntraitsAndDraw();
-        }
+    function preloadImage(src, callback) {
+        const img = new Image();
+        img.onload = function() {
+            callback(img);
+        };
+        img.src = src;
+    }
 
-        function preloadAllFuntraitsAndDraw() {
-            const imagesToDraw = [];
-            let loadedCount = 0;
-
-            activeFuntraits.forEach((funtrait, index) => {
-                preloadImage(funtrait.src, function(img) {
-                    imagesToDraw[index] = img;
-                    loadedCount++;
-                    if (loadedCount === activeFuntraits.length) {
-                        drawCanvas(imagesToDraw);
+    function toggleFuntrait(name) {
+        const index = activeFuntraits.findIndex(f => f.name === name);
+        if (index > -1) {
+            activeFuntraits.splice(index, 1);
+        } else {
+            if (incompatibilities[name]) {
+                incompatibilities[name].forEach(incompatibleName => {
+                    const incompatibleIndex = activeFuntraits.findIndex(f => f.name === incompatibleName);
+                    if (incompatibleIndex > -1) {
+                        activeFuntraits.splice(incompatibleIndex, 1);
                     }
                 });
-            });
+            }
+            const funtrait = funtraits.find(f => f.name === name);
+            activeFuntraits.push({ name: name, ...funtrait });
+            activeFuntraits.sort((a, b) => a.z - b.z);  // Assurer l'ordre z-index
         }
+        preloadAllFuntraitsAndDraw();
+    }
 
-        function drawCanvas(preloadedImages = []) {
-            if (!uploadedImage) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
-            preloadedImages.forEach(img => {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            });
-        }
+    function preloadAllFuntraitsAndDraw() {
+        const imagesToDraw = [];
+        let loadedCount = 0;
 
-        function downloadImage() {
-            const link = document.createElement('a');
-            link.setAttribute('href', canvas.toDataURL('image/jpeg'));
-            link.setAttribute('download', 'image-with-layer.jpg');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // Copy the canvas content as an image
-        function copyImage() {
-            canvas.toBlob(blob => {
-                const item = new ClipboardItem({ "image/png": blob });
-                navigator.clipboard.write([item]).then(() => {
-                    alert("Image copied to clipboard!");
-                }).catch(err => {
-                    console.error("Failed to copy image:", err);
-                });
+        activeFuntraits.forEach((funtrait, index) => {
+            preloadImage(funtrait.src, function(img) {
+                imagesToDraw[index] = img;
+                loadedCount++;
+                if (loadedCount === activeFuntraits.length) {
+                    drawCanvas(imagesToDraw);
+                }
             });
-        }
-    </script>
+        });
+    }
+
+    function drawCanvas(preloadedImages = []) {
+        if (!uploadedImage) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+        preloadedImages.forEach(img => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        });
+    }
+
+    function downloadImage() {
+        const link = document.createElement('a');
+        link.setAttribute('href', canvas.toDataURL('image/jpeg'));
+        link.setAttribute('download', 'image-with-layer.jpg');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function copyImage() {
+        canvas.toBlob(blob => {
+            const item = new ClipboardItem({ "image/png": blob });
+            navigator.clipboard.write([item]).then(() => {
+                alert("Image copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy image:", err);
+            });
+        });
+    }
+</script>
+
+   
 </body>
 </html>
