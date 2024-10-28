@@ -128,6 +128,26 @@
             justify-content: center;
             gap: 20px;
         }
+
+#input-id-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#imageIdInput {
+    width: 100px;
+    padding: 8px;
+    font-size: 16px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+
     </style>
 </head>
 <body>
@@ -142,6 +162,14 @@
             <input type="file" id="imageUpload" accept="image/*">
         </div>
     </div>
+
+<div id="input-id-wrapper">
+    <img id="title-image" src="images/id-title.png" alt="ID Title" style="width: 50%; margin-bottom: 5px;">
+    <input type="number" id="imageIdInput" min="1" max="690" placeholder="1-690">
+</div>
+
+
+
 
     <div id="thumbnail-container">
         <!-- The thumbnails will be dynamically created via JS -->
@@ -172,6 +200,59 @@
     const canvasFrame = document.getElementById('canvas-frame');
     let uploadedImage = null;
     let activeFuntraits = [];
+
+
+const imageIdInput = document.getElementById('imageIdInput');
+
+imageIdInput.addEventListener('change', function() {
+    const imageId = parseInt(imageIdInput.value);
+    if (imageId >= 1 && imageId <= 690) {
+        const imageUrl = `https://ipfs-gw.stargaze-apis.com/ipfs/bafybeictugfluo7kqbelwuuvlrzofgshgxuhznvjqyxgni6j3jeqzua6oa/${imageId}.png`;
+
+        console.log("Generated URL:", imageUrl);
+    } else {
+        alert("Please enter a valid ID between 1 and 690.");
+    }
+});
+
+function loadImageToCanvas(url) {
+    const titleImage = document.getElementById('title-image');
+    
+    // Affiche l'image de chargement
+    titleImage.src = 'images/loading.gif';
+
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // Pour éviter les problèmes de CORS
+    img.onload = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Dessine l'image dans le canvas
+        uploadedImage = img; // Stocke l'image dans uploadedImage
+        buttonsContainer.style.display = 'flex'; // Affiche les boutons "Download" et "Copy"
+        canvasFrame.style.opacity = 1; // Montre le cadre du canvas
+        activateThumbnails(); // Active les thumbnails
+
+        // Remet l'image de titre une fois le chargement terminé
+        titleImage.src = 'images/id-title.png';
+    };
+    
+    img.src = url;
+}
+
+// Utilise loadImageToCanvas avec l'URL générée
+imageIdInput.addEventListener('change', function() {
+    const imageId = parseInt(imageIdInput.value);
+    if (imageId >= 1 && imageId <= 690) {
+        const imageUrl = `https://ipfs-gw.stargaze-apis.com/ipfs/bafybeictugfluo7kqbelwuuvlrzofgshgxuhznvjqyxgni6j3jeqzua6oa/${imageId}.png`;
+        loadImageToCanvas(imageUrl);
+    } else {
+        alert("Please enter a valid ID between 1 and 690.");
+    }
+});
+
+function activateThumbnails() {
+    document.querySelectorAll('#thumbnail-container img').forEach(thumb => thumb.classList.add('active'));
+}
+
 
     const funtraits = [
         { name: 'poopchest', src: 'funtraits/poopchest.png', z: 1, thumb: 'thumbnails/poopchest-thumbnail.png' },
