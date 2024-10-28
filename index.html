@@ -229,6 +229,8 @@ function loadImageToCanvas(url) {
         uploadedImage = img; // Stocke l'image dans uploadedImage
         buttonsContainer.style.display = 'flex'; // Affiche les boutons "Download" et "Copy"
         canvasFrame.style.opacity = 1; // Montre le cadre du canvas
+        
+        activeFuntraits = []; // Réinitialise les funtraits actifs
         activateThumbnails(); // Active les thumbnails
 
         // Remet l'image de titre une fois le chargement terminé
@@ -237,6 +239,27 @@ function loadImageToCanvas(url) {
     
     img.src = url;
 }
+
+// Réinitialise les funtraits actifs également après un upload d'image
+imageUpload.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            uploadedImage = img;
+            drawCanvas();
+            buttonsContainer.style.display = 'flex';
+            canvasFrame.style.opacity = 1;
+            activeFuntraits = []; // Réinitialise les funtraits actifs
+            activateThumbnails();
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+
 
 // Utilise loadImageToCanvas avec l'URL générée
 imageIdInput.addEventListener('change', function() {
