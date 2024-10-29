@@ -278,6 +278,7 @@ function activateThumbnails() {
 
 
    const funtraits = [
+    { name: 'ibabuyou', src: 'funtraits/ibabuyou.png', z: -1, thumb: 'thumbnails/ibabuyou-thumbnail.png' },
     { name: 'stars', src: 'funtraits/stars.png', z: -1, thumb: 'thumbnails/stars-thumbnail.png' },	
     { name: 'babultra', src: 'funtraits/babultra.png', z: 8, thumb: 'thumbnails/babultra-thumbnail.png' },
     { name: 'onfire', src: 'funtraits/onfire.png', z: 8, thumb: 'thumbnails/onfire-thumbnail.png' },
@@ -306,14 +307,16 @@ const incompatibilities = {
     'plantinghamsters': ['babuvil'],
     'baguette': ['babangel'],
     'babangel': ['baguette', 'madbabu', 'onfire', 'babultra'],
-    '687': ['kult', 'babulieve', 'whypamp', '1000x', 'stars'],
-    'kult': ['687', 'babulieve', 'whypamp', '1000x', 'stars'],
-    'babulieve': ['687', 'kult', 'whypamp', '1000x', 'stars'],
-    'whypamp': ['687', 'kult', 'babulieve', '1000x', 'stars'],
-    '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars'],
-    'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult'],
-    'miami': ['madbabu']
+    '687': ['kult', 'babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou'],
+    'kult': ['687', 'babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou'],
+    'babulieve': ['687', 'kult', 'whypamp', '1000x', 'stars', 'ibabuyou'],
+    'whypamp': ['687', 'kult', 'babulieve', '1000x', 'stars', 'ibabuyou'],
+    '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou'],
+    'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'ibabuyou'],
+    'miami': ['madbabu'],
+    'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'stars']
 };
+
 
 
     // Affichage des thumbnails dans l'ordre du tableau
