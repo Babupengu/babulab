@@ -292,9 +292,9 @@ function activateThumbnails() {
     { name: '1000x', src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
     { name: 'babuvil', src: 'funtraits/babuvil.png', z: -2, thumb: 'thumbnails/babuvil-thumbnail.png' },
     { name: 'babangel', src: 'funtraits/babangel.png', z: -2, thumb: 'thumbnails/babangel-thumbnail.png' },
-    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 9, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 10, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
     { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
-    { name: 'baguette', src: 'funtraits/baguette.png', z: 8, thumb: 'thumbnails/baguette-thumbnail.png' }
+    { name: 'baguette', src: 'funtraits/baguette.png', z: 9, thumb: 'thumbnails/baguette-thumbnail.png' }
 ];
 
 const incompatibilities = {
@@ -349,40 +349,46 @@ const incompatibilities = {
         img.src = src;
     }
 
-    function toggleFuntrait(name) {
-        const index = activeFuntraits.findIndex(f => f.name === name);
-        if (index > -1) {
-            activeFuntraits.splice(index, 1);
-        } else {
-            if (incompatibilities[name]) {
-                incompatibilities[name].forEach(incompatibleName => {
-                    const incompatibleIndex = activeFuntraits.findIndex(f => f.name === incompatibleName);
-                    if (incompatibleIndex > -1) {
-                        activeFuntraits.splice(incompatibleIndex, 1);
-                    }
-                });
-            }
-            const funtrait = funtraits.find(f => f.name === name);
-            activeFuntraits.push({ name: name, ...funtrait });
-            activeFuntraits.sort((a, b) => a.z - b.z);  // Assurer l'ordre z-index
-        }
-        preloadAllFuntraitsAndDraw();
-    }
-
-    function preloadAllFuntraitsAndDraw() {
-        const imagesToDraw = [];
-        let loadedCount = 0;
-
-        activeFuntraits.forEach((funtrait, index) => {
-            preloadImage(funtrait.src, function(img) {
-                imagesToDraw[index] = img;
-                loadedCount++;
-                if (loadedCount === activeFuntraits.length) {
-                    drawCanvas(imagesToDraw);
+    
+function toggleFuntrait(name) {
+    const index = activeFuntraits.findIndex(f => f.name === name);
+    if (index > -1) {
+        activeFuntraits.splice(index, 1);
+    } else {
+        // Retirer les funtraits incompatibles
+        if (incompatibilities[name]) {
+            incompatibilities[name].forEach(incompatibleName => {
+                const incompatibleIndex = activeFuntraits.findIndex(f => f.name === incompatibleName);
+                if (incompatibleIndex > -1) {
+                    activeFuntraits.splice(incompatibleIndex, 1);
                 }
             });
-        });
+        }
+        const funtrait = funtraits.find(f => f.name === name);
+        activeFuntraits.push({ name: name, ...funtrait });
     }
+    preloadAllFuntraitsAndDraw();
+}
+
+function preloadAllFuntraitsAndDraw() {
+    const imagesToDraw = [];
+    let loadedCount = 0;
+
+    // Tri des funtraits actifs par z-index avant le rendu
+    activeFuntraits.sort((a, b) => a.z - b.z);
+
+    activeFuntraits.forEach((funtrait, index) => {
+        preloadImage(funtrait.src, function(img) {
+            imagesToDraw[index] = img;
+            loadedCount++;
+            if (loadedCount === activeFuntraits.length) {
+                drawCanvas(imagesToDraw);
+            }
+        });
+    });
+}
+
+
 
     function drawCanvas(preloadedImages = []) {
         if (!uploadedImage) return;
