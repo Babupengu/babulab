@@ -278,6 +278,7 @@ function activateThumbnails() {
 
 
     const funtraits = [
+	{ name: 'onfire', src: 'funtraits/onfire.png', z: 7, thumb: 'thumbnails/onfire-thumbnail.png' },
 	{ name: 'madbabu', src: 'funtraits/madbabu.png', z: 0, thumb: 'thumbnails/madbabu-thumbnail.png' },
 	{ name: 'poopchest', src: 'funtraits/poopchest.png', z: -1, thumb: 'thumbnails/poopchest-thumbnail.png' },
         { name: 'clown', src: 'funtraits/clown.png', z: 3, thumb: 'thumbnails/clown-thumbnail.png' },
@@ -296,7 +297,8 @@ function activateThumbnails() {
     ];
 
     const incompatibilities = {
-    'madbabu': ['miami', 'babuvil', 'babangel'],
+    'onfire': ['miami', 'babuvil', 'babangel','madbabu'],
+    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire'],
     'babuvil': ['plantinghamsters'],
     'plantinghamsters': ['babuvil'],
     'baguette': ['babangel'],
@@ -307,8 +309,8 @@ function activateThumbnails() {
     'whypamp': ['687', 'kult', 'babulieve', '1000x'],
     '1000x': ['687', 'kult', 'babulieve', 'whypamp'],
     'miami': ['madbabu'], // Ajout pour que l'incompatibilité soit bilatérale
-    'babuvil': ['madbabu'], // Ajout pour que l'incompatibilité soit bilatérale
-    'babangel': ['madbabu'] // Ajout pour que l'incompatibilité soit bilatérale
+    'babuvil': ['madbabu','onfire'], // Ajout pour que l'incompatibilité soit bilatérale
+    'babangel': ['madbabu','onfire'] // Ajout pour que l'incompatibilité soit bilatérale
   
 };
 
