@@ -277,41 +277,40 @@ function activateThumbnails() {
 }
 
 
-    const funtraits = [
-	{ name: 'onfire', src: 'funtraits/onfire.png', z: 7, thumb: 'thumbnails/onfire-thumbnail.png' },
-	{ name: 'madbabu', src: 'funtraits/madbabu.png', z: 0, thumb: 'thumbnails/madbabu-thumbnail.png' },
-	{ name: 'poopchest', src: 'funtraits/poopchest.png', z: -1, thumb: 'thumbnails/poopchest-thumbnail.png' },
-        { name: 'clown', src: 'funtraits/clown.png', z: 3, thumb: 'thumbnails/clown-thumbnail.png' },
-        { name: '687', src: 'funtraits/687.png', z: -1, thumb: 'thumbnails/687-thumbnail.png' },
-        { name: 'kult', src: 'funtraits/kult.png', z: -1, thumb: 'thumbnails/kult-thumbnail.png' },
-        { name: 'miami', src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
-        { name: 'brekkingneus', src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
-        { name: 'babulieve', src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
-        { name: 'whypamp', src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
-        { name: '1000x', src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
-        { name: 'babuvil', src: 'funtraits/babuvil.png', z: -2, thumb: 'thumbnails/babuvil-thumbnail.png' },
-        { name: 'babangel', src: 'funtraits/babangel.png', z: -2, thumb: 'thumbnails/babangel-thumbnail.png' },
-        { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 8, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
-        { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
-        { name: 'baguette', src: 'funtraits/baguette.png', z: 6, thumb: 'thumbnails/baguette-thumbnail.png' }
-    ];
+   const funtraits = [
+    { name: 'babultra', src: 'funtraits/babultra.png', z: 7, thumb: 'thumbnails/babultra-thumbnail.png' },
+    { name: 'onfire', src: 'funtraits/onfire.png', z: 7, thumb: 'thumbnails/onfire-thumbnail.png' },
+    { name: 'madbabu', src: 'funtraits/madbabu.png', z: 0, thumb: 'thumbnails/madbabu-thumbnail.png' },
+    { name: 'poopchest', src: 'funtraits/poopchest.png', z: -1, thumb: 'thumbnails/poopchest-thumbnail.png' },
+    { name: 'clown', src: 'funtraits/clown.png', z: 3, thumb: 'thumbnails/clown-thumbnail.png' },
+    { name: '687', src: 'funtraits/687.png', z: -1, thumb: 'thumbnails/687-thumbnail.png' },
+    { name: 'kult', src: 'funtraits/kult.png', z: -1, thumb: 'thumbnails/kult-thumbnail.png' },
+    { name: 'miami', src: 'funtraits/miami.png', z: 4, thumb: 'thumbnails/miami-thumbnail.png' },
+    { name: 'brekkingneus', src: 'funtraits/brekkingneus.png', z: 8, thumb: 'thumbnails/brekkingneus-thumbnail.png' },
+    { name: 'babulieve', src: 'funtraits/babulieve.png', z: 5, thumb: 'thumbnails/babulieve-thumbnail.png' },
+    { name: 'whypamp', src: 'funtraits/whypamp.png', z: 5, thumb: 'thumbnails/whypamp-thumbnail.png' },
+    { name: '1000x', src: 'funtraits/1000x.png', z: 5, thumb: 'thumbnails/1000x-thumbnail.png' },
+    { name: 'babuvil', src: 'funtraits/babuvil.png', z: -2, thumb: 'thumbnails/babuvil-thumbnail.png' },
+    { name: 'babangel', src: 'funtraits/babangel.png', z: -2, thumb: 'thumbnails/babangel-thumbnail.png' },
+    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 8, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+    { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 6, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
+    { name: 'baguette', src: 'funtraits/baguette.png', z: 6, thumb: 'thumbnails/baguette-thumbnail.png' }
+];
 
-    const incompatibilities = {
-    'onfire': ['miami', 'babuvil', 'babangel','madbabu'],
-    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire'],
-    'babuvil': ['plantinghamsters'],
+const incompatibilities = {
+    'babultra': ['babuvil', 'babangel', 'madbabu', 'onfire'],
+    'onfire': ['babuvil', 'babangel', 'madbabu', 'babultra'],
+    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra'],
+    'babuvil': ['plantinghamsters', 'madbabu', 'onfire', 'babultra'],
     'plantinghamsters': ['babuvil'],
     'baguette': ['babangel'],
-    'babangel': ['baguette'],
+    'babangel': ['baguette', 'madbabu', 'onfire', 'babultra'],
     '687': ['kult', 'babulieve', 'whypamp', '1000x'],
     'kult': ['687', 'babulieve', 'whypamp', '1000x'],
     'babulieve': ['687', 'kult', 'whypamp', '1000x'],
     'whypamp': ['687', 'kult', 'babulieve', '1000x'],
     '1000x': ['687', 'kult', 'babulieve', 'whypamp'],
-    'miami': ['madbabu'], // Ajout pour que l'incompatibilité soit bilatérale
-    'babuvil': ['madbabu','onfire'], // Ajout pour que l'incompatibilité soit bilatérale
-    'babangel': ['madbabu','onfire'] // Ajout pour que l'incompatibilité soit bilatérale
-  
+    'miami': ['madbabu']
 };
 
 
