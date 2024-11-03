@@ -175,6 +175,10 @@
         <!-- The thumbnails will be dynamically created via JS -->
     </div>
 
+	<a href="#" id="reset-link" style="margin-bottom: 5px; display: block; text-align: center; ">Reset</a>
+
+
+
     <div id="canvas-container">
         <canvas id="output-canvas" width="600" height="600"></canvas>
         <div id="canvas-frame"></div>
@@ -214,6 +218,20 @@ imageIdInput.addEventListener('change', function() {
         alert("Please enter a valid ID between 1 and 690.");
     }
 });
+
+document.getElementById('reset-link').addEventListener('click', function(e) {
+    e.preventDefault(); // Empêche le comportement par défaut du lien
+    if (uploadedImage) {
+        // Réinitialise le canvas à l'état initial
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+        activeFuntraits = []; // Efface tous les funtraits actifs
+        buttonsContainer.style.display = 'flex'; // Garde les boutons visibles
+        canvasFrame.style.opacity = 1; // Réinitialise l'opacité du cadre
+        activateThumbnails(); // Réactive les miniatures
+    }
+});
+
 
 function loadImageToCanvas(url) {
     const titleImage = document.getElementById('title-image');
@@ -278,6 +296,7 @@ function activateThumbnails() {
 
 
   const funtraits = [
+    { name: 'harpoon', src: 'funtraits/harpoon.png', z: 15, thumb: 'thumbnails/harpoon-thumbnail.png' },
     { name: 'peanut', src: 'funtraits/peanut.png', z: 15, thumb: 'thumbnails/peanut-thumbnail.png' },
     { name: 'gmbelt', src: 'funtraits/gmbelt.png', z: 13, thumb: 'thumbnails/gmbelt-thumbnail.png' },
     { name: 'maori-right', src: 'funtraits/maori-right.png', z: 6, thumb: 'thumbnails/maori-right-thumbnail.png' },
@@ -310,22 +329,24 @@ function activateThumbnails() {
 ];
 
 const incompatibilities = {
+    'harpoon': ['bloody', 'lsk', 'madbabu', '1000x', 'whypamp','babulieve'],
     'peanut': ['babuvil', 'plantinghamsters'],
+    'bloody': ['harpoon'],
     'gmbelt': ['lsk','687','kult','ibabuyou','miami','babulieve','whypamp','1000x'],
     'suitup': ['lsk','ibabuyou', 'stars', '687','kult','madbabu','madbabu','miami','babulieve','whypamp','1000x'],
-    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt'],
+    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon'],
     'babultra': ['babuvil', 'babangel', 'madbabu', 'onfire','lsk'],
     'onfire': ['babuvil', 'babangel', 'madbabu', 'babultra','lsk'],
-    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup'],
+    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup','harpoon'],
     'babuvil': ['plantinghamsters', 'madbabu', 'onfire', 'babultra','lsk','peanut'],
     'plantinghamsters': ['babuvil','peanut'],
     'baguette': ['babangel','lsk'],
     'babangel': ['baguette', 'madbabu', 'onfire', 'babultra','lsk'],
     '687': ['kult','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
     'kult': ['687','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
-    'babulieve': ['687', 'kult', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
-    'whypamp': ['687', 'kult', 'babulieve', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
-    '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
+    'babulieve': ['687', 'kult', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
+    'whypamp': ['687', 'kult', 'babulieve', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
+    '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'ibabuyou', 'chain','suitup'],
     'miami': ['madbabu','suitup'],
     'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt'],
