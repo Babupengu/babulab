@@ -296,13 +296,14 @@ function activateThumbnails() {
 
 
   const funtraits = [
-    { name: 'gun-left', src: 'funtraits/gun-left.png', z: 19, thumb: 'thumbnails/gun-left-thumbnail.png' },
-    { name: 'gun-right', src: 'funtraits/gun-right.png', z: 19, thumb: 'thumbnails/gun-right-thumbnail.png' },
+    { name: 'tozemoon', src: 'funtraits/tozemoon.png', z: 19, thumb: 'thumbnails/tozemoon-thumbnail.png' },
+    { name: 'gun-left', src: 'funtraits/gun-left.png', z: 21, thumb: 'thumbnails/gun-left-thumbnail.png' },
+    { name: 'gun-right', src: 'funtraits/gun-right.png', z: 21, thumb: 'thumbnails/gun-right-thumbnail.png' },
     { name: 'laptop', src: 'funtraits/laptop.png', z: 16, thumb: 'thumbnails/laptop-thumbnail.png' },
     { name: 'unicorn', src: 'funtraits/unicorn.png', z: 17, thumb: 'thumbnails/unicorn-thumbnail.png' },
     { name: 'popcorn', src: 'funtraits/popcorn.png', z: 18, thumb: 'thumbnails/popcorn-thumbnail.png' },
     { name: 'harpoon', src: 'funtraits/harpoon.png', z: 15, thumb: 'thumbnails/harpoon-thumbnail.png' },
-    { name: 'peanut', src: 'funtraits/peanut.png', z: 19, thumb: 'thumbnails/peanut-thumbnail.png' },
+    { name: 'peanut', src: 'funtraits/peanut.png', z: 20, thumb: 'thumbnails/peanut-thumbnail.png' },
     { name: 'gmbelt', src: 'funtraits/gmbelt.png', z: 13, thumb: 'thumbnails/gmbelt-thumbnail.png' },
     { name: 'maori-right', src: 'funtraits/maori-right.png', z: 6, thumb: 'thumbnails/maori-right-thumbnail.png' },
     { name: 'maori-left', src: 'funtraits/maori-left.png', z: 6, thumb: 'thumbnails/maori-left-thumbnail.png' },
@@ -328,12 +329,13 @@ function activateThumbnails() {
     { name: '1000x', src: 'funtraits/1000x.png', z: 15, thumb: 'thumbnails/1000x-thumbnail.png' },
     { name: 'babuvil', src: 'funtraits/babuvil.png', z: 7, thumb: 'thumbnails/babuvil-thumbnail.png' },
     { name: 'babangel', src: 'funtraits/babangel.png', z: 7, thumb: 'thumbnails/babangel-thumbnail.png' },
-    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 19, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 20, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
     { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 15, thumb: 'thumbnails/plantinghamsters-thumbnail.png' },
     { name: 'baguette', src: 'funtraits/baguette.png', z: 15, thumb: 'thumbnails/baguette-thumbnail.png' }
 ];
 
 const incompatibilities = {
+    'tozemoon': ['laptop', 'harpoon', 'peanut','babuvil','babangel','plantinghamsters','baguette'],
     'gun-left': ['laptop', 'popcorn', 'harpoon', 'peanut','babuvil','neuspeppa','plantinghamsters'],
     'gun-right': ['harpoon', 'bloody','babangel','neuspeppa','baguette'],
     'laptop': ['gun-left'],
