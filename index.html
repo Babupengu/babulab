@@ -296,6 +296,7 @@ function activateThumbnails() {
 
 
   const funtraits = [
+    { name: 'sweater', src: 'funtraits/sweater.png', z: 9, thumb: 'thumbnails/sweater-thumbnail.png' },
     { name: 'bluechip', src: 'funtraits/bluechip.png', z: 15, thumb: 'thumbnails/bluechip-thumbnail.png' },
     { name: 'dj', src: 'funtraits/dj.png', z: 19, thumb: 'thumbnails/dj-thumbnail.png' },
     { name: 'tozemoon', src: 'funtraits/tozemoon.png', z: 19, thumb: 'thumbnails/tozemoon-thumbnail.png' },
@@ -337,6 +338,7 @@ function activateThumbnails() {
 ];
 
 const incompatibilities = {
+    'sweater': ['ibabuyou'],
     'dj': ['tozemoon','lsk','laptop', 'popcorn','bluechip'],
     'bluechip': ['lsk','dj'],
     'tozemoon': ['laptop', 'harpoon', 'peanut','babuvil','babangel','plantinghamsters','baguette','dj'],
@@ -366,7 +368,7 @@ const incompatibilities = {
     '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'ibabuyou', 'chain','suitup'],
     'miami': ['madbabu','suitup'],
-    'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt'],
+    'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt','sweater'],
     'chain': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'stars']
 };
 
