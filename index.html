@@ -296,6 +296,7 @@ function activateThumbnails() {
 
 
   const funtraits = [
+    { name: 'kabab', src: 'funtraits/kabab.png', z: 16, thumb: 'thumbnails/kabab-thumbnail.png' },
     { name: 'starbabucks', src: 'funtraits/starbabucks.png', z: 9, thumb: 'thumbnails/starbabucks-thumbnail.png' },
     { name: 'contracts', src: 'funtraits/contracts.png', z: 9, thumb: 'thumbnails/contracts-thumbnail.png' },
     { name: 'cheese', src: 'funtraits/cheese.png', z: 20, thumb: 'thumbnails/cheese-thumbnail.png' },
@@ -341,10 +342,11 @@ function activateThumbnails() {
 ];
 
 const incompatibilities = {
+    'kabab': ['lsk','bluechip'],
     'cheese': ['gun-left','laptop','tozemoon','popcorn'],
     'sweater': ['ibabuyou'],
     'dj': ['tozemoon','lsk','laptop', 'popcorn','bluechip'],
-    'bluechip': ['lsk','dj'],
+    'bluechip': ['lsk','dj','kabab'],
     'tozemoon': ['laptop', 'harpoon', 'peanut','babuvil','babangel','plantinghamsters','baguette','dj','cheese'],
     'gun-left': ['laptop', 'popcorn', 'harpoon', 'peanut','babuvil','neuspeppa','plantinghamsters','cheese'],
     'gun-right': ['harpoon', 'bloody','babangel','neuspeppa','baguette'],
@@ -357,7 +359,7 @@ const incompatibilities = {
     'bloody': ['harpoon','gun-right'],
     'gmbelt': ['lsk','687','kult','ibabuyou','miami','babulieve','whypamp','1000x'],
     'suitup': ['lsk','ibabuyou', 'stars', '687','kult','madbabu','madbabu','miami','babulieve','whypamp','1000x'],
-    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon','dj'],
+    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon','dj','kabab'],
     'babultra': ['babuvil', 'babangel', 'madbabu', 'onfire','lsk'],
     'onfire': ['babuvil', 'babangel', 'madbabu', 'babultra','lsk'],
     'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup','harpoon'],
