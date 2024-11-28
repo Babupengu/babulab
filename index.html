@@ -296,10 +296,11 @@ function activateThumbnails() {
 
 
   const funtraits = [
+    { name: 'baboobs', src: 'funtraits/baboobs.png', z: 9, thumb: 'thumbnails/baboobs-thumbnail.png' },
     { name: 'kabab', src: 'funtraits/kabab.png', z: 16, thumb: 'thumbnails/kabab-thumbnail.png' },
     { name: 'starbabucks', src: 'funtraits/starbabucks.png', z: 9, thumb: 'thumbnails/starbabucks-thumbnail.png' },
     { name: 'contracts', src: 'funtraits/contracts.png', z: 9, thumb: 'thumbnails/contracts-thumbnail.png' },
-    { name: 'cheese', src: 'funtraits/cheese.png', z: 20, thumb: 'thumbnails/cheese-thumbnail.png' },
+    { name: 'cheese', src: 'funtraits/cheese.png', z: 21, thumb: 'thumbnails/cheese-thumbnail.png' },
     { name: 'baguette', src: 'funtraits/baguette.png', z: 15, thumb: 'thumbnails/baguette-thumbnail.png' },
     { name: 'sweater', src: 'funtraits/sweater.png', z: 9, thumb: 'thumbnails/sweater-thumbnail.png' },
     { name: 'bluechip', src: 'funtraits/bluechip.png', z: 15, thumb: 'thumbnails/bluechip-thumbnail.png' },
@@ -337,16 +338,19 @@ function activateThumbnails() {
     { name: '1000x', src: 'funtraits/1000x.png', z: 15, thumb: 'thumbnails/1000x-thumbnail.png' },
     { name: 'babuvil', src: 'funtraits/babuvil.png', z: 7, thumb: 'thumbnails/babuvil-thumbnail.png' },
     { name: 'babangel', src: 'funtraits/babangel.png', z: 7, thumb: 'thumbnails/babangel-thumbnail.png' },
-    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 21, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
+    { name: 'neuspeppa', src: 'funtraits/neuspeppa.png', z: 22, thumb: 'thumbnails/neuspeppa-thumbnail.png' },
     { name: 'plantinghamsters', src: 'funtraits/plantinghamsters.png', z: 15, thumb: 'thumbnails/plantinghamsters-thumbnail.png' }
 ];
 
 const incompatibilities = {
-    'kabab': ['lsk','bluechip'],
+    'baboobs': ['kabab','contracts','baguette','suitup','bluechip','dj','harpoon','gmbelt','ibabuyou','harpoon','starbabucks'],
+    'contracts': ['baboobs'],
+    'starbabucks': ['baboobs'],
+    'kabab': ['lsk','bluechip','baboobs'],
     'cheese': ['gun-left','laptop','tozemoon','popcorn'],
     'sweater': ['ibabuyou'],
-    'dj': ['tozemoon','lsk','laptop', 'popcorn','bluechip'],
-    'bluechip': ['lsk','dj','kabab'],
+    'dj': ['tozemoon','lsk','laptop', 'popcorn','bluechip','baboobs'],
+    'bluechip': ['lsk','dj','kabab','baboobs'],
     'tozemoon': ['laptop', 'harpoon', 'peanut','babuvil','babangel','plantinghamsters','baguette','dj','cheese'],
     'gun-left': ['laptop', 'popcorn', 'harpoon', 'peanut','babuvil','neuspeppa','plantinghamsters','cheese'],
     'gun-right': ['harpoon', 'bloody','babangel','neuspeppa','baguette'],
@@ -354,18 +358,18 @@ const incompatibilities = {
     'popcorn': ['gun-left','dj','cheese'],
     'neuspeppa': ['gun-left','gun-right'],
     'unicorn': ['bloody', 'lsk', 'stars', '1000x','whypamp','babulieve','687','kult'],
-    'harpoon': ['bloody', 'lsk', 'madbabu', '1000x', 'whypamp','babulieve','gun-left','gun-right','tozemoon'],
+    'harpoon': ['bloody', 'lsk', 'madbabu', '1000x', 'whypamp','babulieve','gun-left','gun-right','tozemoon','baboobs'],
     'peanut': ['babuvil', 'plantinghamsters','gun-left','tozemoon'],
     'bloody': ['harpoon','gun-right'],
-    'gmbelt': ['lsk','687','kult','ibabuyou','miami','babulieve','whypamp','1000x'],
-    'suitup': ['lsk','ibabuyou', 'stars', '687','kult','madbabu','madbabu','miami','babulieve','whypamp','1000x'],
+    'gmbelt': ['lsk','687','kult','ibabuyou','miami','babulieve','whypamp','1000x','baboobs'],
+    'suitup': ['lsk','ibabuyou', 'stars', '687','kult','madbabu','madbabu','miami','babulieve','whypamp','1000x','baboobs'],
     'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon','dj','kabab'],
     'babultra': ['babuvil', 'babangel', 'madbabu', 'onfire','lsk'],
     'onfire': ['babuvil', 'babangel', 'madbabu', 'babultra','lsk'],
     'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup','harpoon'],
     'babuvil': ['plantinghamsters', 'madbabu', 'onfire', 'babultra','lsk','peanut','gun-left','tozemoon'],
     'plantinghamsters': ['babuvil','peanut','gun-left','tozemoon'],
-    'baguette': ['babangel','lsk','gun-right','tozemoon'],
+    'baguette': ['babangel','lsk','gun-right','tozemoon','baboobs'],
     'babangel': ['baguette', 'madbabu', 'onfire', 'babultra','lsk','gun-right','tozemoon'],
     '687': ['kult','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
     'kult': ['687','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
@@ -374,7 +378,7 @@ const incompatibilities = {
     '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'ibabuyou', 'chain','suitup'],
     'miami': ['madbabu','suitup'],
-    'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt','sweater'],
+    'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt','sweater','baboobs'],
     'chain': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'stars']
 };
 
