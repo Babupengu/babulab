@@ -296,6 +296,7 @@ function activateThumbnails() {
 
 
   const funtraits = [
+    { name: 'jacuzzi', src: 'funtraits/jacuzzi.png', z: 14, thumb: 'thumbnails/jacuzzi-thumbnail.png' },
     { name: 'baboobs', src: 'funtraits/baboobs.png', z: 9, thumb: 'thumbnails/baboobs-thumbnail.png' },
     { name: 'kabab', src: 'funtraits/kabab.png', z: 16, thumb: 'thumbnails/kabab-thumbnail.png' },
     { name: 'starbabucks', src: 'funtraits/starbabucks.png', z: 9, thumb: 'thumbnails/starbabucks-thumbnail.png' },
@@ -343,7 +344,8 @@ function activateThumbnails() {
 ];
 
 const incompatibilities = {
-    'baboobs': ['kabab','contracts','baguette','suitup','bluechip','dj','harpoon','gmbelt','ibabuyou','harpoon','starbabucks'],
+    'baboobs': ['kabab','contracts','baguette','suitup','bluechip','dj','harpoon','gmbelt','ibabuyou','harpoon','starbabucks','jacuzzi'],
+    'jacuzzi': ['baboobs','lsk','madbabu','miami','babuvil','babangel'],
     'contracts': ['baboobs'],
     'starbabucks': ['baboobs'],
     'kabab': ['lsk','bluechip','baboobs'],
@@ -363,21 +365,21 @@ const incompatibilities = {
     'bloody': ['harpoon','gun-right'],
     'gmbelt': ['lsk','687','kult','ibabuyou','miami','babulieve','whypamp','1000x','baboobs'],
     'suitup': ['lsk','ibabuyou', 'stars', '687','kult','madbabu','madbabu','miami','babulieve','whypamp','1000x','baboobs'],
-    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon','dj','kabab'],
+    'lsk': ['babuvil', 'babultra', 'madbabu', 'onfire','babangel','baguette','suitup','gmbelt','harpoon','dj','kabab','jacuzzi'],
     'babultra': ['babuvil', 'babangel', 'madbabu', 'onfire','lsk'],
     'onfire': ['babuvil', 'babangel', 'madbabu', 'babultra','lsk'],
-    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup','harpoon'],
-    'babuvil': ['plantinghamsters', 'madbabu', 'onfire', 'babultra','lsk','peanut','gun-left','tozemoon'],
+    'madbabu': ['miami', 'babuvil', 'babangel', 'onfire', 'babultra','lsk','suitup','harpoon','jacuzzi'],
+    'babuvil': ['plantinghamsters', 'madbabu', 'onfire', 'babultra','lsk','peanut','gun-left','tozemoon','jacuzzi'],
     'plantinghamsters': ['babuvil','peanut','gun-left','tozemoon'],
     'baguette': ['babangel','lsk','gun-right','tozemoon','baboobs'],
-    'babangel': ['baguette', 'madbabu', 'onfire', 'babultra','lsk','gun-right','tozemoon'],
+    'babangel': ['baguette', 'madbabu', 'onfire', 'babultra','lsk','gun-right','tozemoon','jacuzzi'],
     '687': ['kult','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
     'kult': ['687','babulieve', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt'],
     'babulieve': ['687', 'kult', 'whypamp', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     'whypamp': ['687', 'kult', 'babulieve', '1000x', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     '1000x': ['687', 'kult', 'babulieve', 'whypamp', 'stars', 'ibabuyou', 'chain','suitup','gmbelt','harpoon'],
     'stars': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'ibabuyou', 'chain','suitup'],
-    'miami': ['madbabu','suitup'],
+    'miami': ['madbabu','suitup','jacuzzi'],
     'ibabuyou': ['687', 'babulieve', 'whypamp', '1000x', 'kult','stars','suitup','gmbelt','sweater','baboobs'],
     'chain': ['687', 'babulieve', 'whypamp', '1000x', 'kult', 'stars']
 };
